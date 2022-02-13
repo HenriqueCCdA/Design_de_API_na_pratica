@@ -17,9 +17,10 @@ def barista(request):
     try:
         params = {k: request.GET[k] for k in ('coffee', 'size', 'milk', 'location')}
     except MultiValueDictKeyError as e:
-        body = 'Erro: Não foi possível registar o pedido'
+        key = str(e).strip("'")
+        body = f'Missing Param: {key}'
         headers = {'Content-Type': 'text/plain; charset=utf-8'}
-        return HttpResponse(body, headers=headers)
+        return HttpResponse(body, status=400, headers=headers)
 
     order = Order(**params)
     coffeShop.place_order(order)
