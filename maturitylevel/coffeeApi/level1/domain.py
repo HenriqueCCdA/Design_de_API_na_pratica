@@ -43,3 +43,6 @@ class CoffeeShop:
             return self.orders[int(id)]
         except KeyError as e:
             raise DoesNotExist(id)
+
+def serialize(body):
+    return '\n'.join(f'{k}={v}' for k, v in sorted(vars(body).items()))

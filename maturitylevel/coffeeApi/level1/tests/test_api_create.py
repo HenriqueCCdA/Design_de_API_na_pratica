@@ -17,7 +17,7 @@ def test_post_sucess(client, coffeeshop):
 
     assert response.status_code == HTTPStatus.CREATED
     assert len(coffeeshop.orders) == 1
-    assert b'Order=1' == response.content
+    assert response.content == b'coffee=latte\nid=1\nlocation=takeAwey\nmilk=whole\nsize=large'
 
 
 def test_post_badreq(client, coffeeshop):

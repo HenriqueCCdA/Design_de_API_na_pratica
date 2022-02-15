@@ -4,6 +4,8 @@ from http import HTTPStatus
 from django.http import HttpResponse
 from django.utils.datastructures import MultiValueDictKeyError
 
+from coffeeApi.level1.domain import DoesNotExist
+
 
 DEFAULT_CT = 'text/plain; charset=utf-8'
 
@@ -43,6 +45,10 @@ class NoContent(MyResponse):
     status_code = HTTPStatus.NO_CONTENT
 
 
+class Ok(MyResponse):
+    status_code = HTTPStatus.OK
+
+
 class allow:
 
     def __init__(self, methods):
@@ -75,3 +81,14 @@ class require:
             return view(request, params)
 
         return wrapper
+
+class FrameworkCommonExceptionHandler:
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        return self.get_response(request)
+
+    def process_exception(self, request, exc):
+        if isinstance(exc, DoesNotExist):
+            return NotFound()
