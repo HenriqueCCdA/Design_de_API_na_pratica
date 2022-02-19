@@ -22,6 +22,7 @@ def test_post_sucess(api_client, coffeeshop):
     response = api_client.post(url, data=data)
 
     assert response.status_code == HTTPStatus.CREATED
+    assert response.headers['Location'] == 'http://testserver/order/1'
     assert len(coffeeshop.orders) == 1
     #assert response.content == b'coffee=latte\nid=1\nlocation=takeAwey\nmilk=whole\nsize=large'
 

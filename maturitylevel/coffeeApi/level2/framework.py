@@ -5,6 +5,7 @@ import json
 
 from django.http import HttpResponse
 from django.test import Client
+from django.urls import reverse
 from django.utils.datastructures import MultiValueDictKeyError
 
 from coffeeApi.level2.domain import DoesNotExist
@@ -117,8 +118,8 @@ class FrameworkCommonExceptionHandler:
             return NotFound()
 
 
-def serialize(body):
-    return '\n'.join(f'{k}={v}' for k, v in sorted(vars(body).items()))
+# def serialize(body):
+#     return '\n'.join(f'{k}={v}' for k, v in sorted(vars(body).items()))
 
 
 def serialize(obj):
@@ -146,3 +147,8 @@ APIClient = type('APIClient',
                  (Client,),
                  {verb: functools.partialmethod(getattr(Client, verb), content_type=DEFAULT_CT)
                  for verb in ('post', 'get', 'put', 'delete')})
+
+def abs_reverse(request, viewname, args=None, kwargs=None, current_app=None):
+    return  request.build_absolute_uri(
+        reverse(viewname, args=args, kwargs=kwargs, current_app=current_app)
+    )

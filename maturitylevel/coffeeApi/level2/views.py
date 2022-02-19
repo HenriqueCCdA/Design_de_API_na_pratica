@@ -1,7 +1,7 @@
 from coopy.base import init_persistent_system
 
 from coffeeApi.level2.domain import CoffeeShop, Order
-from coffeeApi.level2.framework import Ok, allow, Created, NoContent, data_required, serialize
+from coffeeApi.level2.framework import Ok, abs_reverse, allow, Created, NoContent, data_required, serialize
 
 
 coffeeshop = init_persistent_system(CoffeeShop(), basedir='data/level2')
@@ -22,8 +22,10 @@ def create(request, params=None):
     order = Order(**params)
     coffeeshop.place_order(order)
 
-    return Created(serialize(order))
-
+    return Created(
+        serialize(order),
+        headers={'Location': abs_reverse(request, 'order', args=(order.id,))}
+    )
 
 @allow(['DELETE'])
 def delete(request, id):

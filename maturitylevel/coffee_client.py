@@ -1,30 +1,29 @@
-'''
-TODO LIST:
-
-- quem é o client
-- os dados do pedido
-- montar url
-- fazer um get
-- imprimir o id do pedido
-
-'''
-
 import argparse
+import json
 import requests
 import re
 
 
 BASE_URL = 'http://localhost:8000'
 
-def place_order(coffee, size, milk, location):
-    url = f'{BASE_URL}/PlaceOrder?coffee={coffee}&size={size}&milk={milk}&location={location}'
 
-    r = requests.get(url)
+def post(coffee, size, milk, location):
+    url = f'{BASE_URL}/order'
 
-    order_id = ''.join(re.findall(r'Order=(\d+)', r.text))
+    data = dict(coffee='latte', milk='whole', size='large', location='takeAway')
 
-    return order_id
+    headers = {'content-type': 'application/json'}
 
+    r = requests.post(url, data=json.dumps(data), headers=headers)
+
+    return r.headers['Location']
+
+def get(url):
+
+    headers = {'content-type': 'application/json'}
+    r = requests.get(url, headers=headers)
+
+    return r.json()
 
 def build_parser():
     parser =argparse.ArgumentParser()
@@ -44,4 +43,4 @@ if __name__ == '__main__':
     parser = build_parser()
     args = parser.parse_args()
 
-    print(place_order(args.coffee, args.size, args.milk, args.location))
+    print(get(post(args.coffee, args.size, args.milk, args.location)))

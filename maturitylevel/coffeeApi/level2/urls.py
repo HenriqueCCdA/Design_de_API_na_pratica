@@ -4,5 +4,5 @@ from coffeeApi.level2 import views
 
 
 urlpatterns = [
-    re_path(r'order(?:/(?P<id>\d+))?', views.dispatch),
+    re_path(r'order(?:/(?P<id>\d+))?', views.dispatch, name='order'),
 ]
