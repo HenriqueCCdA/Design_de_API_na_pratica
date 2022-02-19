@@ -23,7 +23,10 @@ def test_post_sucess(api_client, coffeeshop):
 
     assert response.status_code == HTTPStatus.CREATED
     assert len(coffeeshop.orders) == 1
-    assert response.content == b'coffee=latte\nid=1\nlocation=takeAwey\nmilk=whole\nsize=large'
+    #assert response.content == b'coffee=latte\nid=1\nlocation=takeAwey\nmilk=whole\nsize=large'
+
+    expected = dict(id=1, coffee='latte', size='large', milk='whole', location='takeAwey')
+    assert response.json() == expected
 
 
 def test_post_badreq(api_client, coffeeshop):

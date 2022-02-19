@@ -9,7 +9,8 @@ def test_read_success(api_client, one_coffee):
     response = api_client.get(url)
 
     assert response.status_code == HTTPStatus.OK
-    assert response.content  == b'coffee=latte\nid=1\nlocation=takeAway\nmilk=whole\nsize=large'
+    excepted = dict(coffee='latte', milk='whole', size='large', id=1, location='takeAway')
+    assert response.json() == excepted
 
 
 @pytest.mark.skip

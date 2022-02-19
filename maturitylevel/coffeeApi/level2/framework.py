@@ -121,6 +121,10 @@ def serialize(body):
     return '\n'.join(f'{k}={v}' for k, v in sorted(vars(body).items()))
 
 
+def serialize(obj):
+    return json.dumps(vars(obj))
+
+
 # class APIClient(Client):
 #     def post(self, *args, **kwargs):
 #         kwargs['content_type'] = DEFAULT_CT
