@@ -1,6 +1,10 @@
+from datetime import datetime
 from http import HTTPStatus
 
 import pytest
+
+from coffeeApi.level2.framework import deserialize
+
 
 @pytest.mark.skip
 def test_get_not_allowed(client, coffeeshop):
@@ -26,8 +30,9 @@ def test_post_sucess(api_client, coffeeshop):
     assert len(coffeeshop.orders) == 1
     #assert response.content == b'coffee=latte\nid=1\nlocation=takeAwey\nmilk=whole\nsize=large'
 
-    expected = dict(id=1, coffee='latte', size='large', milk='whole', location='takeAwey')
-    assert response.json() == expected
+    expected = dict(id=1, coffee='latte', size='large', milk='whole', location='takeAwey',
+                    created_at=datetime(2021, 4, 28))
+    assert deserialize(response.content) == expected
 
 
 def test_post_badreq(api_client, coffeeshop):

@@ -1,6 +1,9 @@
+from datetime import datetime
 from http import HTTPStatus
 
 import pytest
+
+from coffeeApi.level2.framework import deserialize
 
 
 def test_read_success(api_client, one_coffee):
@@ -9,8 +12,9 @@ def test_read_success(api_client, one_coffee):
     response = api_client.get(url)
 
     assert response.status_code == HTTPStatus.OK
-    excepted = dict(coffee='latte', milk='whole', size='large', id=1, location='takeAway')
-    assert response.json() == excepted
+    excepted = dict(coffee='latte', milk='whole', size='large', id=1, location='takeAway',
+                    created_at=datetime(2021, 4, 28))
+    assert deserialize(response.content) == excepted
 
 
 @pytest.mark.skip

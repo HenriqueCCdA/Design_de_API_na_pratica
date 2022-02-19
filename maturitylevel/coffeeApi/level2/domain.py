@@ -1,17 +1,22 @@
+def now():
+    from django.utils.datetime_safe import datetime
+    return datetime.now()
+
+
 class DoesNotExist(Exception):
     pass
 
 
 class Order:
-    def __init__(self, coffee='', size='', milk='', location='', id=None):
+    def __init__(self, coffee='', size='', milk='', location='', id=None, created_at=None, status=None):
         self.id = None if id is None else int(id)
         self.coffee = coffee
         self.size = size
         self.milk = milk
         self.location = location
+        self.created_at = now() if created_at is None else created_at
+        #self.status =
 
-    def __str__(self):
-        return '\n'.join(f'{k}={v}' for k, v in sorted(vars(self).items()))
 
 class CoffeeShop:
     def __init__(self):

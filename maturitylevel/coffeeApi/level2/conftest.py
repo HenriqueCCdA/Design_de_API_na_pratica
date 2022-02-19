@@ -27,3 +27,10 @@ def api_client():
     skip_if_no_django()
 
     return APIClient()
+
+
+@pytest.fixture(autouse=True)
+def fixed_now(monkeypatch):
+    from coffeeApi.level2 import domain
+    from datetime import datetime
+    monkeypatch.setattr(domain, 'now', lambda: datetime(2021, 4, 28))

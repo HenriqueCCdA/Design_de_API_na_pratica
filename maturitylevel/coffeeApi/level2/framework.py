@@ -1,8 +1,10 @@
+from datetime import datetime
 import functools
 from http import HTTPStatus
 import json
 
 
+from django.core.serializers.json import DjangoJSONEncoder
 from django.http import HttpResponse
 from django.test import Client
 from django.urls import reverse
@@ -118,14 +120,6 @@ class FrameworkCommonExceptionHandler:
             return NotFound()
 
 
-# def serialize(body):
-#     return '\n'.join(f'{k}={v}' for k, v in sorted(vars(body).items()))
-
-
-def serialize(obj):
-    return json.dumps(vars(obj))
-
-
 # class APIClient(Client):
 #     def post(self, *args, **kwargs):
 #         kwargs['content_type'] = DEFAULT_CT
@@ -152,3 +146,34 @@ def abs_reverse(request, viewname, args=None, kwargs=None, current_app=None):
     return  request.build_absolute_uri(
         reverse(viewname, args=args, kwargs=kwargs, current_app=current_app)
     )
+
+
+def serialize(obj):
+    return json.dumps(vars(obj), cls=MyJSONEncoder)
+
+
+def deserialize(s):
+    return json.loads(s, cls=MyJSONEDecoder)
+
+
+class MyJSONEncoder(DjangoJSONEncoder):
+    pass
+
+
+class MyJSONEDecoder(json.JSONDecoder):
+    def __init__(self, *args, **kwargs):
+        super().__init__(object_hook=self.hook, *args, **kwargs)
+
+    @staticmethod
+    def hook(source):
+        d ={}
+        for k, v in source.items():
+            if isinstance(v, str) and not v.isdigit():
+                try:
+                    d[k] = datetime.fromisoformat(v)
+                except (ValueError, TypeError):
+                    d[k] = v
+
+            else:
+                d[k] = v
+        return d
