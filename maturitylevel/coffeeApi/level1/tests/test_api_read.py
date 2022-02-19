@@ -2,7 +2,7 @@ from http import HTTPStatus
 
 
 def test_read_success(client, one_coffee):
-    url = '/order?id=1'
+    url = '/order/read?id=1'
 
     response = client.get(url)
 
@@ -11,7 +11,7 @@ def test_read_success(client, one_coffee):
 
 
 def test_read_not_allowed(client, one_coffee):
-    url = '/order?id=1'
+    url = '/order/read?id=1'
 
     response = client.post(url)
 
@@ -19,7 +19,7 @@ def test_read_not_allowed(client, one_coffee):
 
 
 def test_read_beadreq(client, one_coffee):
-    url = '/order'
+    url = '/order/read'
 
     response = client.get(url)
 
@@ -27,7 +27,7 @@ def test_read_beadreq(client, one_coffee):
 
 def test_read_not_found(client, one_coffee):
 
-    url = '/order?id=404'
+    url = '/order/read?id=404'
 
     response = client.get(url)
 
