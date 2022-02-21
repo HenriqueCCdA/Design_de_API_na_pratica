@@ -2,7 +2,7 @@ import pytest
 from pytest_django.lazy_django import skip_if_no_django
 
 
-from coffeeApi.level2.domain import CoffeeShop, Order
+from coffeeApi.level2.domain import CoffeeShop, Order, Status
 from coffeeApi.level2.framework import APIClient
 
 
@@ -14,7 +14,7 @@ def coffeeshop(mocker):
 
 @pytest.fixture
 def order():
-    return Order(coffee='latte', size='large', milk='whole', location='takeAway')
+    return Order(coffee='latte', size='large', milk='whole', location='takeAway', status=Status.Placed)
 
 @pytest.fixture
 def one_coffee(coffeeshop, order):

@@ -1,3 +1,6 @@
+from enum import Enum, auto
+
+
 def now():
     from django.utils.datetime_safe import datetime
     return datetime.now()
@@ -5,6 +8,13 @@ def now():
 
 class DoesNotExist(Exception):
     pass
+
+
+class Status(Enum):
+    Placed = auto()
+    Paid = auto()
+    Served = auto()
+    Collected = auto()
 
 
 class Order:
@@ -15,7 +25,13 @@ class Order:
         self.milk = milk
         self.location = location
         self.created_at = now() if created_at is None else created_at
-        #self.status =
+        self.status = status
+
+    def vars(self):
+        d = vars(self)
+
+        d['status'] = str(d['status']).removeprefix('Status.')
+        return d
 
 
 class CoffeeShop:
@@ -37,9 +53,13 @@ class CoffeeShop:
             raise DoesNotExist(order.id)
 
     def update(self, order):
-        if order.id not in self.orders:
-            raise DoesNotExist(order.id)
+        saved = self.read(order.id)
+
+        if order.status is None:
+            order.status = saved.status
+
         self.orders[order.id] = order
+
         return order
 
     def read(self, id):

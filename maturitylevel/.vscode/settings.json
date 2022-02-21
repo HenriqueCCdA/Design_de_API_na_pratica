@@ -1,8 +1,0 @@
-{
-    "python.testing.pytestArgs": [
-        "coffeeApi"
-    ],
-    "python.testing.unittestEnabled": false,
-    "python.testing.pytestEnabled": true,
-    "editor.codeLens": false
-}

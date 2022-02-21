@@ -13,8 +13,8 @@ def test_update_sucess(api_client, one_coffee):
     assert response.status_code == HTTPStatus.NO_CONTENT
     assert len(one_coffee.orders) == 1
     assert (dict(coffee='curto', milk='', size='small', id=1, location='takeAway',
-            created_at=datetime(2021, 4, 28))
-        == vars(one_coffee.read(1))
+            created_at=datetime(2021, 4, 28), status='Placed')
+        == one_coffee.read(1).vars()
     )
 
 @pytest.mark.skip

@@ -2,6 +2,7 @@ from datetime import datetime
 import functools
 from http import HTTPStatus
 import json
+from json import JSONDecoder
 
 
 from django.core.serializers.json import DjangoJSONEncoder
@@ -149,7 +150,7 @@ def abs_reverse(request, viewname, args=None, kwargs=None, current_app=None):
 
 
 def serialize(obj):
-    return json.dumps(vars(obj), cls=MyJSONEncoder)
+    return json.dumps(obj, cls=MyJSONEncoder)
 
 
 def deserialize(s):
@@ -157,10 +158,14 @@ def deserialize(s):
 
 
 class MyJSONEncoder(DjangoJSONEncoder):
-    pass
+    def default(self, o):
+        if hasattr(o, 'vars'):
+            return self.encode(o.vars())
+        else:
+            return super().default(o)
 
 
-class MyJSONEDecoder(json.JSONDecoder):
+class MyJSONEDecoder(JSONDecoder):
     def __init__(self, *args, **kwargs):
         super().__init__(object_hook=self.hook, *args, **kwargs)
 

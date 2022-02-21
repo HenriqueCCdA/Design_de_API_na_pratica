@@ -1,6 +1,6 @@
 from coopy.base import init_persistent_system
 
-from coffeeApi.level2.domain import CoffeeShop, Order
+from coffeeApi.level2.domain import CoffeeShop, Order, Status
 from coffeeApi.level2.framework import Ok, abs_reverse, allow, Created, NoContent, data_required, serialize
 
 
@@ -19,7 +19,7 @@ def dispatch(request, *args, **kwargs):
 @data_required('coffee', 'size', 'milk', 'location')
 def create(request, params=None):
 
-    order = Order(**params)
+    order = Order(**params, status=Status.Placed)
     coffeeshop.place_order(order)
 
     return Created(

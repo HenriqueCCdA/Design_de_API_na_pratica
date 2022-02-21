@@ -28,11 +28,11 @@ def test_post_sucess(api_client, coffeeshop):
     assert response.status_code == HTTPStatus.CREATED
     assert response.headers['Location'] == 'http://testserver/order/1'
     assert len(coffeeshop.orders) == 1
-    #assert response.content == b'coffee=latte\nid=1\nlocation=takeAwey\nmilk=whole\nsize=large'
 
     expected = dict(id=1, coffee='latte', size='large', milk='whole', location='takeAwey',
-                    created_at=datetime(2021, 4, 28))
-    assert deserialize(response.content) == expected
+                    created_at=datetime(2021, 4, 28), status="Placed")
+
+    assert deserialize(response.json()) == expected
 
 
 def test_post_badreq(api_client, coffeeshop):

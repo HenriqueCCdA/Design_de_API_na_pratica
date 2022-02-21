@@ -13,8 +13,8 @@ def test_read_success(api_client, one_coffee):
 
     assert response.status_code == HTTPStatus.OK
     excepted = dict(coffee='latte', milk='whole', size='large', id=1, location='takeAway',
-                    created_at=datetime(2021, 4, 28))
-    assert deserialize(response.content) == excepted
+                    created_at=datetime(2021, 4, 28), status="Placed")
+    assert deserialize(response.json()) == excepted
 
 
 @pytest.mark.skip
