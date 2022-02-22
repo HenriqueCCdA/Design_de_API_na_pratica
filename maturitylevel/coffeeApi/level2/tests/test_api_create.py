@@ -32,7 +32,7 @@ def test_post_sucess(api_client, coffeeshop):
     expected = dict(id=1, coffee='latte', size='large', milk='whole', location='takeAwey',
                     created_at=datetime(2021, 4, 28), status="Placed")
 
-    assert deserialize(response.json()) == expected
+    assert response.json() == expected
 
 
 def test_post_badreq(api_client, coffeeshop):

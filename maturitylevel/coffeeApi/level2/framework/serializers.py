@@ -1,3 +1,4 @@
+import abc
 from datetime import datetime
 import json
 
@@ -13,12 +14,25 @@ def deserialize(s):
     return json.loads(s, cls=MyJSONEDecoder)
 
 
+class IMySerializable(metaclass=abc.ABCMeta):
+    @classmethod
+    def __subclasscheck__(cls, subclass):
+        return (
+            hasattr(subclass, 'vars') and
+            callable(subclass.vars)
+        )
+
+    @abc.abstractclassmethod
+    def vars(self):
+        pass
+
+
 class MyJSONEncoder(DjangoJSONEncoder):
-    def default(self, o):
-        if hasattr(o, 'vars'):
-            return self.encode(o.vars())
-        else:
-            return super().default(o)
+
+    def encode(self, o):
+        if isinstance(o, IMySerializable):
+            o = o.vars()
+        return super().encode(o)
 
 
 class MyJSONEDecoder(json.JSONDecoder):

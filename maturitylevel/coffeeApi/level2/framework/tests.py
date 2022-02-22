@@ -1,8 +1,8 @@
-import functools
+from functools import partialmethod
 from django.test import Client
 
-
 from .http import DEFAULT_CT
+from .serializers import MyJSONEDecoder, MyJSONEncoder
 
 # class APIClient(Client):
 #     def post(self, *args, **kwargs):
@@ -23,5 +23,10 @@ from .http import DEFAULT_CT
 
 APIClient = type('APIClient',
                  (Client,),
-                 {verb: functools.partialmethod(getattr(Client, verb), content_type=DEFAULT_CT)
-                 for verb in ('post', 'get', 'put', 'delete')})
+                 {
+                     '__init__': partialmethod(Client.__init__, json_encoder=MyJSONEncoder),
+                     '_parse_json': partialmethod(Client._parse_json, cls=MyJSONEDecoder),
+                     **{verb: partialmethod(getattr(Client, verb), content_type=DEFAULT_CT)
+                        for verb in ('post', 'get', 'put', 'delete')},
+                 }
+)
