@@ -1,7 +1,7 @@
 import argparse
 import json
 import requests
-import re
+
 
 
 BASE_URL = 'http://localhost:8000'
@@ -38,9 +38,7 @@ def build_parser():
 
     return parser
 
-if __name__ == '__main__':
+parser = build_parser()
+args = parser.parse_args()
 
-    parser = build_parser()
-    args = parser.parse_args()
-
-    print(get(post(args.coffee, args.size, args.milk, args.location)))
+print(get(post(args.coffee, args.size, args.milk, args.location)))
