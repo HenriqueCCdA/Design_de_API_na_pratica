@@ -33,7 +33,7 @@ def update(request, params):
     order = Order(**params)
     order = coffeeshop.update(order)
 
-    return NoContent()
+    return Ok(serialize(order))
 
 
 @allow(['GET'])
