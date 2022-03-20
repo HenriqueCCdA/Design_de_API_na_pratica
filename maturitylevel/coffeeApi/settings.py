@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'coffeeApi.level0',
     'coffeeApi.level1',
     'coffeeApi.level2',
+    'coffeeApi.level3',
 ]
 
 MIDDLEWARE = [
@@ -53,6 +54,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'coffeeApi.level1.framework.FrameworkCommonExceptionHandler',
     'coffeeApi.level2.framework.FrameworkCommonExceptionHandler',
+    'coffeeApi.level3.framework.FrameworkCommonExceptionHandler',
 ]
 
 ROOT_URLCONF = 'coffeeApi.urls'

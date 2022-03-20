@@ -27,8 +27,15 @@ def test_post_sucess(api_client, coffeeshop):
     assert response.headers['Location'] == 'http://testserver/order/1'
     assert len(coffeeshop.orders) == 1
 
+    links = dict(
+        self='http://testserver/order/1',
+        update='http://testserver/order/1',
+        cancel='http://testserver/order/1',
+        payment='http://testserver/payment/1'
+    )
+
     expected = dict(id=1, coffee='latte', size='large', milk='whole', location='takeAwey',
-                    created_at=datetime(2021, 4, 28), status="Placed")
+                    created_at=datetime(2021, 4, 28), status="Placed", links=links)
 
     assert response.json() == expected
 

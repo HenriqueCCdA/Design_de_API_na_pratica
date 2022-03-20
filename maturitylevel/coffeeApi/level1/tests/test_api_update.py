@@ -6,7 +6,7 @@ def test_update_sucess(client, one_coffee):
 
     response = client.post(url)
 
-    assert response.status_code == HTTPStatus.NO_CONTENT
+    assert response.status_code == HTTPStatus.OK
     assert len(one_coffee.orders) == 1
     assert (dict(coffee='curto', milk='', size='small', id=1, location='takeAway')
         == vars(one_coffee.read(1))

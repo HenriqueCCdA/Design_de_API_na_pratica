@@ -3,8 +3,6 @@ from http import HTTPStatus
 
 import pytest
 
-from coffeeApi.level2.framework import deserialize
-
 
 def test_read_success(api_client, one_coffee):
     url = '/order/1'
